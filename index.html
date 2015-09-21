@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<title>last breath</title>
+		<link href="structure.css" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+		<script src="src/init.js"></script>
+		<script src="src/jquery-1.11.3.min.js"></script>
+		<script src="src/gameEngineLibrary.js"></script>
+		<script src="src/flyLibrary.js"></script>
+		<script src="src/flyHunter.js"></script>
+
+		<script>
+			var GAME = new gameEngine([flyGameLogic, flyGameDraw], flyGameInit);
+			GAME.START();
+
+			setTimeout(function(){
+				GAME.STOP();
+					}, 10000);
+		</script>
+
+	</body>
+
+</html>
