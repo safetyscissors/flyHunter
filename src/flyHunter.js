@@ -3,6 +3,7 @@ function flyGameInit(ref){
 	ref.DATA.TICK = 0;
 	ref.DATA.DEBUG = [];
 	ref.DEBUGON = true;
+	ref.DATA.ENTITIES = [];
 }
 
 function flyGameLogic(){
@@ -12,6 +13,7 @@ function flyGameLogic(){
 	//action for this frame
 	GAME.DATA.TICK++;
 	GAME.DATA.DEBUG.push('tick:'+GAME.DATA.TICK);
+	spawnFly();
 }
 
 function flyGameDraw(){
@@ -20,12 +22,30 @@ function flyGameDraw(){
 
 	//action for this frame
 	printDebug(GAME.DATA.DEBUG, document.getElementById('debug'));
+
+	//draw entities
+	for(var i=0;i<GAME.DATA.ENTITIES.length;i++){
+		(GAME.DATA.ENTITIES[i]).draw();
+	}
 }
 
 
 //============================= LISTENER FUNCTIONS ==================================\\
 
 window.onresize = resizeCanvas;
+
+
+//============================= HELPER FUNCTIONS ===================================\\
+
+function spawnFly(){
+	if(!GAME.DATA.context) return console.log('no context');
+	if(GAME.DATA.ENTITIES.length==0){
+		var fly = new Fly();
+		fly.pos.x=100;
+		fly.pos.y=100;
+		GAME.DATA.ENTITIES.push(fly);
+	}
+}
 
 //============================= HELPER FUNCTIONS ===================================\\
 

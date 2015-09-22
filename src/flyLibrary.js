@@ -2,6 +2,8 @@ function Fly(){
 	var sounds = ['ross1','ross2','ross3','ross4','smith1','smith2','smith3','trott1','trott2'];
 	this.sound = sounds[Math.floor(Math.random() * sounds.length)] || sounds[0];
 	
+	this.width=10;
+	this.height=10;
 	var sides = [
 		{x:GAME.DATA.context.width*Math.random(), y:0},
 		{x:GAME.DATA.context.width*Math.random(), y:GAME.DATA.context.height},
@@ -10,8 +12,16 @@ function Fly(){
 	]
 	this.pos = sides[Math.floor(Math.random()*sides.length)] || sides[0];
 	this.nextPos = {
-		x=0,
-		y=0
+		x:0,
+		y:0
+	}
+
+	//========================= functions ==========================\\
+
+	this.draw = function(){
+		var ctx = GAME.DATA.context;
+		ctx.fillStyle='green';
+		ctx.fillRect(this.pos.x,this.pos.y,this.width,this.height);
 	}
 
 }
