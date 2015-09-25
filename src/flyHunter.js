@@ -1,9 +1,11 @@
 
-function flyGameInit(ref){
-	ref.DATA.TICK = 0;
-	ref.DATA.DEBUG = [];
-	ref.DEBUGON = true;
-	ref.DATA.ENTITIES = [];
+function flyGameInit(){
+	GAME.DATA.TICK = 0;
+	GAME.DATA.DEBUG = [];
+	GAME.DEBUGON = false;
+	GAME.DATA.ENTITIES = [];
+
+	clearCanvas();
 }
 
 function flyGameLogic(){
@@ -13,7 +15,16 @@ function flyGameLogic(){
 	//action for this frame
 	GAME.DATA.TICK++;
 	GAME.DATA.DEBUG.push('tick:'+GAME.DATA.TICK);
+
 	spawnFly();
+	
+
+	//logic entities
+	for(var i=0;i<GAME.DATA.ENTITIES.length;i++){
+		if(typeof GAME.DATA.ENTITIES[i].logic ==='function'){
+			(GAME.DATA.ENTITIES[i]).logic();
+		}
+	}
 }
 
 function flyGameDraw(){
@@ -24,8 +35,11 @@ function flyGameDraw(){
 	printDebug(GAME.DATA.DEBUG, document.getElementById('debug'));
 
 	//draw entities
-	for(var i=0;i<GAME.DATA.ENTITIES.length;i++){
-		(GAME.DATA.ENTITIES[i]).draw();
+	var drawSorted = _.sortBy(GAME.DATA.ENTITIES, 'z');
+	for(var i=0;i<drawSorted.length;i++){
+		if(typeof drawSorted[i].draw ==='function'){
+			(drawSorted[i]).draw();
+		}
 	}
 }
 
@@ -38,13 +52,24 @@ window.onresize = resizeCanvas;
 //============================= HELPER FUNCTIONS ===================================\\
 
 function spawnFly(){
+	var maxFlies = 2;
 	if(!GAME.DATA.context) return console.log('no context');
-	if(GAME.DATA.ENTITIES.length==0){
+	if(countFlies() < maxFlies){
 		var fly = new Fly();
-		fly.pos.x=100;
-		fly.pos.y=100;
+		fly.ENTITYID=GAME.DATA.ENTITIES.length;
 		GAME.DATA.ENTITIES.push(fly);
 	}
+}
+
+function countFlies(){
+	var flyCount =0;
+	for(var i=0;i<GAME.DATA.ENTITIES.length;i++){
+		var entity = GAME.DATA.ENTITIES[i];
+		if(entity.type && entity.type == 'fly'){
+			flyCount ++;
+		}
+	}
+	return flyCount;
 }
 
 //============================= HELPER FUNCTIONS ===================================\\
@@ -88,11 +113,13 @@ function resizeCanvas(){
 }
 
 function clearCanvas(){
-	if(!GAME.DATA.context) initContext();
-	GAME.DATA.context.clearRect(0, 0, GAME.DATA.canvas.width, GAME.DATA.canvas.height);
-	GAME.DATA.context.rect(0,0,GAME.DATA.canvas.width, GAME.DATA.canvas.height);
-	GAME.DATA.context.fillStyle="#EFEFEF";
-	GAME.DATA.context.fill();
+	var ref = GAME.DATA;
+
+	if(!ref.context) initContext();
+	ref.context.clearRect(0, 0, ref.canvas.width, ref.canvas.height);
+	ref.context.rect(0,0,ref.canvas.width, ref.canvas.height);
+	ref.context.fillStyle="#EFEFEF";
+	ref.context.fill();
 }
 
 function checkGameObj(){

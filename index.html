@@ -6,17 +6,18 @@
 	<body>
 		<script src="src/init.js"></script>
 		<script src="src/jquery-1.11.3.min.js"></script>
+		<script src="src/underscore1.8.3.js"></script>
 		<script src="src/gameEngineLibrary.js"></script>
 		<script src="src/flyLibrary.js"></script>
 		<script src="src/flyHunter.js"></script>
+		<script src="src/splatterLibrary.js"></script>
 
 		<script>
 			var GAME = new gameEngine([flyGameLogic, flyGameDraw], flyGameInit);
 			GAME.START();
 
-			setTimeout(function(){
-				GAME.STOP();
-					}, 10000);
+			setTimeout(function(){GAME.DATA.ENTITIES[0].kill()}, 2000);
+			setTimeout(function(){GAME.STOP()}, 10000);
 		</script>
 
 	</body>

@@ -1,16 +1,17 @@
 function gameEngine(gameFunctions, gameConstructor){
 	//initialize internal stuff
-	this.FPS = 10
+	this.FPS = 30;
 	this._gameFunctionReferences = gameFunctions;
 	this._runState=true;
 
 	this.DATA={};
 	this.LOOP=function(){gameLoop(this)};
-	this.START=this.LOOP;
+	this.START=function(){
+		this.INIT()
+		this.LOOP();
+	}
 	this.STOP=function(){this._runState=false};
-
-	//call the external constructor
-	gameConstructor(this);
+	this.INIT = gameConstructor;
 }
 
 
