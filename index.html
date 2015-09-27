@@ -11,13 +11,18 @@
 		<script src="src/flyLibrary.js"></script>
 		<script src="src/flyHunter.js"></script>
 		<script src="src/splatterLibrary.js"></script>
+		<script src="src/keyboardLibrary.js"></script>
 
 		<script>
 			var GAME = new gameEngine([flyGameLogic, flyGameDraw], flyGameInit);
 			GAME.START();
 
-			setTimeout(function(){GAME.DATA.ENTITIES[0].kill()}, 2000);
-			setTimeout(function(){GAME.STOP()}, 10000);
+			setTimeout(function(){
+				_.each(GAME.DATA.ENTITIES, function(entity){
+					if(entity.type=='fly'){entity.kill()}
+				})
+			}, 2000);
+			setTimeout(function(){GAME.STOP()}, 5000);
 		</script>
 
 	</body>
